@@ -6,7 +6,7 @@
 
 std::mt19937 Helpers::generator;
 
-void Helpers::init_seed() {
+void Helpers::init_generator() {
   std::random_device rd;
   int the_seed = rd();
   std::cout << "THE SEED IS: " << the_seed << std::endl;
@@ -43,9 +43,6 @@ bool Helpers::try_probability(double prob) {
 }
 
 int Helpers::get_random_int(int low_inclusive, int high_inclusive) {
-  // set up randomizer
-
-  /** TODO: GENERATE GETSEED PROPERLY **/
   std::uniform_int_distribution<int> distribution(low_inclusive, high_inclusive);
 
   return distribution(generator);

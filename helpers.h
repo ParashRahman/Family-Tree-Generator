@@ -9,7 +9,7 @@ class Helpers {
   /* keeps track of the random generation */
   static std::mt19937 generator;
  public:
-  static void init_seed();
+  static void init_generator();
   static std::string generate_UID();
   static bool try_probability(double prob);
   static int get_random_int(int low_inclusive, int high_inclusive);

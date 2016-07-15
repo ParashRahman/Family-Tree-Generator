@@ -3,7 +3,9 @@
 #include <vector>
 #include <cstring> // for memcpy
 #include <utility>
+
 #include "person.h"
+#include "helpers.h"
 
 typedef unsigned long long int ulli;
 
@@ -15,16 +17,10 @@ const std::vector<std::string> Person::name_parts = {
   };
 
 std::string Person::generate_name(int syllables) {
-  // set up the randomizer
-  std::random_device rd; // seed creator
-  std::default_random_engine generator {rd()};
-  std::uniform_int_distribution<int> distribution(0, name_parts.size() - 1);
-
   // concatenate the random syllables together
   std::string retName = "";
   for (int i = 0; i < syllables; i++) {
-    int name_part_index = distribution(generator);
-    
+    int name_part_index = Helpers::get_random_int(0, name_parts.size() - 1);
     retName += name_parts[name_part_index];
   }
 
