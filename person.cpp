@@ -118,11 +118,11 @@ std::string Person::getUID() const{
   return UID;
 }
 
-double Person::getGender() const{
+unsigned int Person::getGender() const{
   return gender;
 }
 
-double Person::getSexOrient() const{
+unsigned int Person::getSexOrient() const{
   return sex_orientation;
 }
 

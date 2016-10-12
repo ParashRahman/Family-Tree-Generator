@@ -44,8 +44,8 @@ class Person {
   // getters
   std::string getName() const;
   std::string getUID() const;
-  double getGender() const;
-  double getSexOrient() const;
+  unsigned int getGender() const;
+  unsigned int getSexOrient() const;
   std::string getReligion() const;
   double getReligiousStatus() const;
   double getAbility() const;

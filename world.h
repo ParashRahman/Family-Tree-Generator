@@ -38,9 +38,12 @@ class World {
   double rate_of_world_technology;
   double rate_of_world_economics;
   double rate_of_world_health;
+  double death_rate;
+  double birth_rate;
 
+  void update_rates(); /* update the rates based on peoples accomplishments */
   void mate_all_the_people(); /* the angel of life (sex) */
-  void kill_all_the_people(); /* the angel of death */
+  void kill_all_the_people(std::string reason); /* the angel of death */
   void update_people_connections(); /* removes the dead connections and forms new ones on the living */
   void update_accomplishments(); /* from nobel prize winning to mass murder */
   void update_people_statistics(); /* people become happier, sadder, fatter, unhealthier, richer, poorer as they grow older and know new people */
@@ -61,7 +64,8 @@ class World {
     good = 4
   };
 
-  std::vector< std::pair<Person *, std::string> > get_wishes(); 
+  std::vector< std::pair<Person *, std::string> > get_wishes();
+  std::vector<Person *> sample_living_people(ulli sample_size);
   std::vector<Person *> get_living_people();
   std::vector<Person *> get_dead_people(ulli generation);
   std::vector<Person *> get_messiahs();
@@ -74,7 +78,8 @@ class World {
   void make_person_indelible(Person *to_add, unsigned int TYPE);
   void kill_person(Person *to_kill, std::string death_reason);
   void appoint_messiah(Person *messiah, std::vector<std::string> miracles);
-  void perform_dangerous_disaster(ulli x_coord, ulli y_coord, ulli radius);
+  void perform_dangerous_disaster(ulli x_coord, ulli y_coord, ulli radius,
+				  std::string disaster_type);
   void update_to_next_generation();
   void print_world();
 };
