@@ -8,7 +8,7 @@
 
 #include "Group.h"
 
-class Social : Group {
+class Social : public Group {
 
 };
 

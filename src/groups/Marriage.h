@@ -10,7 +10,7 @@
 #include "Group.h"
 #include "../Person.h"
 
-class Marriage : Group {
+class Marriage : public Group {
 private:
   ~Marriage();
 

@@ -7,7 +7,7 @@
 
 #include "Group.h"
 
-class Religion : Group {
+class Religion : public Group {
 
 };
 

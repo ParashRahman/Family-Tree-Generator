@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <vector>
+#include <string>
 
 #include "Person.h"
 
@@ -132,4 +133,16 @@ const std::vector<std::string> &Person::getReligious_achievements() const {
 
 void Person::setReligious_achievements(const std::vector<std::string> &religious_achievements) {
   Person::religious_achievements = religious_achievements;
+}
+
+std::string Person::toString() {
+  std::string to_return = "";
+
+  auto getters = get_getters();
+
+
+  //TODO: string conversion
+  for (int i = 0; i < getters.size(); ++i) {
+    //to_return += "property " + i + "" +
+  }
 }

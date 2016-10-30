@@ -7,8 +7,8 @@
 
 #include "Group.h"
 
-class Family : Group {
-  
+class Family : public Group {
+
 };
 
 

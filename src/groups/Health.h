@@ -7,7 +7,7 @@
 
 #include "Group.h"
 
-class Health : Group {
+class Health : public Group {
 
 };
 

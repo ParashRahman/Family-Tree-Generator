@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <string>
 
 typedef std::function<void(double)> setter;
 typedef std::function<double()> getter;
@@ -74,6 +75,7 @@ public:
   const std::vector<std::string> &getReligious_achievements() const;
   void setReligious_achievements(const std::vector<std::string> &religious_achievements);
 
+  std::string toString();
 };
 
 
