@@ -12,6 +12,8 @@
 
 class Marriage : Group {
 private:
+  ~Marriage();
+
   std::vector<int> pertinent_stats = {
     Person::stats::HEALTH,
     Person::stats::EMOTION,
@@ -21,8 +23,9 @@ private:
   };
 
   Person *average;
-  void update_average(Person *p);
+  int n;
 public:
+  Marriage();
   void augment_person(Person *p);
 };
 
