@@ -18,7 +18,7 @@ private:
   // all stats are from 0 to 1
   double hormones; // 0 testostrone to 1 estrogen
   double sexuality; // 0 hetero to 1 homo
-  double health; // physcial health
+  double health; // physical health
   double emotion; // emotional intelligence
   double social; // social talent
   double ability; // talent
@@ -37,6 +37,8 @@ private:
   std::vector<getter> getters;
   std::vector<setter> setters;
 
+  double evolutionary_ebb();
+  void limit_statistics();
 public:
   enum stats : unsigned int {
     HORMONES = 0,
@@ -47,6 +49,9 @@ public:
     ABILITY = 5,
     FERTILITY = 6
   };
+
+  Person(double hormones, double sexuality, double health, double emotion,
+          double social, double ability, double fertility);
 
   std::vector<getter> get_getters();
   std::vector<setter> get_setters();

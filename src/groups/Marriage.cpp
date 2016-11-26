@@ -33,7 +33,7 @@ void Marriage::augment_person(Person *p) {
 }
 
 Marriage::Marriage() {
-  average = new Person();
+  average = new Person(0,0,0,0,0,0,0);
   n = 0;
 }
 

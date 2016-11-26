@@ -4,12 +4,46 @@
 
 #include <functional>
 #include <vector>
-#include <string>
 
+#include "Helpers.h"
 #include "Person.h"
 
 typedef std::function<void(double)> setter;
 typedef std::function<double()> getter;
+
+#define MINIMUM_EBB -0.01
+#define MAXIMUM_EBB 0.01
+
+double Person::evolutionary_ebb() {
+  return Helpers::get_random_double(MINIMUM_EBB, MAXIMUM_EBB);
+}
+
+void Person::limit_statistics() {
+  auto getters = this->get_getters();
+  auto setters = this->get_setters();
+
+  for (int g = 0; g < getters.size(); ++g) {
+    double statistic = getters[g]();
+
+    statistic = statistic < 0 ? 0 : statistic;
+    statistic = statistic > 1 ? 1 : statistic;
+
+    setters[g](statistic);
+  }
+}
+
+Person::Person(double hormones, double sexuality, double health, double emotion,
+               double social, double ability, double fertility) {
+  this->hormones = hormones + evolutionary_ebb();
+  this->sexuality = sexuality + evolutionary_ebb();
+  this->health = health + evolutionary_ebb();
+  this->emotion = emotion + evolutionary_ebb();
+  this->social = social + evolutionary_ebb();
+  this->ability = ability + evolutionary_ebb();
+  this->fertility = fertility + evolutionary_ebb();
+
+  limit_statistics();
+}
 
 std::vector<getter> Person::get_getters() {
   std::vector<getter> getters = {
@@ -143,6 +177,8 @@ std::string Person::toString() {
 
   //TODO: string conversion
   for (int i = 0; i < getters.size(); ++i) {
-    //to_return += "property " + i + "" +
+    to_return += "property " + Helpers::convertIntegerToString(i) + ": " + Helpers::convertDoubleToString(getters[i]()) + "\n";
   }
+
+  return to_return;
 }
