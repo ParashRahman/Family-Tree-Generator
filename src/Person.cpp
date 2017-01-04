@@ -14,6 +14,11 @@ typedef std::function<double()> getter;
 #define MINIMUM_EBB -0.01
 #define MAXIMUM_EBB 0.01
 
+/////////////////////////////
+// VALUE OF STATS ARE DETERMINED BY THIS:
+// min(1 / (1 - stat), MAX_INT)
+/////////////////////////////
+
 double Person::evolutionary_ebb() {
   return Helpers::get_random_double(MINIMUM_EBB, MAXIMUM_EBB);
 }

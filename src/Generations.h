@@ -5,14 +5,19 @@
 #ifndef GS_GENERATION_H
 #define GS_GENERATION_H
 
-#include <deque>
 #include <vector>
 #include "Person.h"
 
-class Generation {
+class Generations {
 private:
-  std::deque<std::vector> people_container;
+  int generation_number = 0;
+
+  std::vector<Person *> people_container;
+  std::vector<double> death_distribution;
+  std::vector<double> procreation_distribution;
 public:
+  Generations();
+
   // the people who will die this generation
   std::vector<Person*> get_and_remove_condemned();
 
