@@ -15,6 +15,8 @@ private:
   std::vector<Person *> people_container;
   std::vector<double> death_distribution;
   std::vector<double> procreation_distribution;
+  std::vector<Person*> get_people_based_on_distro(std::vector<double>& distro);
+
 public:
   Generations();
 

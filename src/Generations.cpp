@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Generations.h"
+#include "Helpers.h"
 
 Generations::Generations() {
   // default distributions set
@@ -38,13 +39,13 @@ void Generations::set_procreation_distribution(std::vector<double> distro) {
   this->procreation_distribution = distro;
 }
 
-std::vector<Person*> Generations::get_intimate_pool() {
+std::vector<Person*> Generations::get_people_based_on_distro(std::vector<double>& distro) {
   if (this->people_container.size() == 0) {
     return std::vector<Person *>();
   }
 
   // based on procreation distribution
-  int slices = this->procreation_distribution.size();
+  int slices = distro.size();
   int slice_size = this->people_container.size() / slices;
 
   std::vector<Person *> procreation_pool;
@@ -54,15 +55,26 @@ std::vector<Person*> Generations::get_intimate_pool() {
     int upper_bound = (s + slice_size) < this->people_container.size() ? (s + slice_size) : this-> people_container.size() - 1;
     int distro_index = s / slice_size;
 
-    double probability = this->procreation_distribution[distro_index];
+    double probability = distro[distro_index];
 
     for (int p = lower_bound; p <= upper_bound; ++p) {
       // if (probability) then add person to procreation pool;
+      double result = Helpers::get_random_double(0, 1);
+
+      if (result < probability) {
+        procreation_pool.push_back(this->people_container[p]);
+      }
     }
   }
+
+  return procreation_pool;
+}
+
+std::vector<Person*> Generations::get_intimate_pool() {
+  return get_people_based_on_distro(this->procreation_distribution);
 }
 
 std::vector<Person*> Generations::get_and_remove_condemned() {
-
+  return get_people_based_on_distro(this->death_distribution);
 }
 

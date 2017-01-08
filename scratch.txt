@@ -1,0 +1,25 @@
+S: 0 - 1
+H: 0 - 1
+
+P1: (s1, h1)
+P2: (s2, h2)
+
+ideals: [(0, 0), (0, 1)]
+	and [(0, 1), (0, 0)]
+	and [(1, 1), (1, 1)]
+	and [(1, 0), (1, 0)]
+
+linear distance idea DISMISSED
+quadratic distance can work but when do people move together? When groups force them to.
+matching decided through connection network.
+x,y element of [0,1]
+matching is greedy (like life)
+
+Group creation
+- decided by distance
+- circular distance random
+- people mapped by coordinate blocks for fast access of people
+- groups change peoples location
+
+TODO:
+-change how people storage works
