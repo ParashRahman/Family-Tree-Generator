@@ -1,0 +1,4 @@
+Rather than generating all the people, the user can take random samples from the distributions.
+
+- Way more convinient for procreation
+- Way less memory required
