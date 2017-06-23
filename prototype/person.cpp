@@ -9,7 +9,7 @@ typedef unsigned long long gen_type;
 
 ID_type Person::CURRENT_ID = 0;
 
-Person::Person(std::string nom, gen_type gen) : name(nom), my_generation(gen) {
+Person::Person(std::string nom, gen_type gen, ID_type dad, ID_type mom) : name(nom), my_generation(gen), father(dad), mother(mom) {
   my_id = CURRENT_ID;
   ++CURRENT_ID;
 }
@@ -34,4 +34,12 @@ ID_type Person::get_ID() {
 
 gen_type Person::get_generation() {
   return my_generation;
+}
+
+ID_type Person::get_mother() {
+  return mother;
+}
+
+ID_type Person::get_father() {
+  return father;
 }

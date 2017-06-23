@@ -1,3 +1,6 @@
+#ifndef _FAMILY_TREE_H_
+#define _FAMILY_TREE_H_
+
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -27,3 +30,5 @@ class FamilyTree {
   children_map generate_love_lives(ID_type id);
   friend_vector generate_friendships(ID_type id);
 };
+
+#endif
