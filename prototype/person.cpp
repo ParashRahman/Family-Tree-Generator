@@ -1,0 +1,37 @@
+#include <unordered_map>
+#include <vector>
+
+#include "person.h"
+
+typedef std::shared_ptr<Person> person_ptr;
+typedef unsigned long long ID_type;
+typedef unsigned long long gen_type;
+
+ID_type Person::CURRENT_ID = 0;
+
+Person::Person(std::string nom, gen_type gen) : name(nom), my_generation(gen) {
+  my_id = CURRENT_ID;
+  ++CURRENT_ID;
+}
+
+void Person::add_children(person_ptr spouse, std::vector<person_ptr> children) {
+
+  std::vector<ID_type> children_IDs(children.size(), 0);
+  for (int c = 0; c < children.size(); ++c) {
+    children_IDs[c] = children[c]->get_ID();
+  }
+
+  child_map[spouse->get_ID()] = children_IDs;
+}
+
+void Person::add_friendships(person_ptr friendo) {
+  friends.push_back(friendo->get_ID());
+}
+
+ID_type Person::get_ID() {
+  return my_id;
+}
+
+gen_type Person::get_generation() {
+  return my_generation;
+}
