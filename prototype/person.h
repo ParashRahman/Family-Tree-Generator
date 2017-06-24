@@ -32,7 +32,8 @@ class Person {
   gen_type get_generation();
   ID_type get_mother();
   ID_type get_father();
-  
+
+  std::string toString();
 };
 
 #endif

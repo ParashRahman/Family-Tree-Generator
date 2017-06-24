@@ -1,3 +1,4 @@
+#include <iostream>
 #include <unordered_map>
 #include <vector>
 
@@ -42,4 +43,8 @@ ID_type Person::get_mother() {
 
 ID_type Person::get_father() {
   return father;
+}
+
+std::string Person::toString() {
+  return name;
 }

@@ -14,18 +14,26 @@ typedef unsigned long long gen_type;
 typedef std::vector<ID_type> friend_vector;
 typedef std::unordered_map< ID_type, std::vector<ID_type> > children_map;
 
+struct FamilyNode {
+  person_ptr parent;
+  std::vector< std::shared_ptr<FamilyNode> > children;
+
+  FamilyNode(person_ptr p) {
+    parent = p;
+    children = std::vector< std::shared_ptr<FamilyNode> >();
+  }
+};
+
 class FamilyTree {
  private:
   // this is the most future generation kept track of
   gen_type last_generation = 0;
 
-  // these maps allow caching of people and keeping track
-  //   of which people need to be reprocedurally generated
-  std::unordered_map<ID_type, weak_person_ptr> people_cache;
+  std::unordered_map< ID_type, std::weak_ptr<FamilyNode> > weak_node_ptrs;
   std::unordered_map<ID_type, bool> needs_updating;
   std::unordered_map< gen_type, std::vector<ID_type> > gen_mapping;
 
-  person_ptr o_god;
+  std::shared_ptr<FamilyNode> root;
  public:
   FamilyTree();
   void visit_person(ID_type id);
@@ -33,6 +41,9 @@ class FamilyTree {
   friend_vector generate_friendships(ID_type id);
   std::vector<ID_type> make_kids(ID_type person1, ID_type person2, int number);
   void make_friends(ID_type person1, ID_type person2);
+
+  std::string toString_node(ID_type id);
+  std::string toString();
 };
 
 #endif

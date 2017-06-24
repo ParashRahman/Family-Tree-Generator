@@ -4,5 +4,6 @@
 #include "person.h"
 
 int main() {
-  
+  FamilyTree ft;
+  std::cout << ft.toString() << std::endl;;
 }
