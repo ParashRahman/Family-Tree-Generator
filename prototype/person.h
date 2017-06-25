@@ -1,7 +1,7 @@
-#include <memory>
 #ifndef _PERSON_H_
 #define _PERSON_H_
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -13,7 +13,14 @@ typedef unsigned long long gen_type;
 typedef std::unordered_map< ID_type, std::vector<ID_type> > children_map;
 typedef std::vector<ID_type> friend_vector;
 
+struct PersonStats {
+  
+};
+
 class Person {
+ public:
+    enum PersonStatistic { tolerance };
+  
  private:
   std::string name;
   static ID_type CURRENT_ID;
@@ -23,8 +30,10 @@ class Person {
   friend_vector friends;
   ID_type father;
   ID_type mother;
+  std::unordered_map< int, double > person_stats;
   
  public:
+  
   Person(std::string name, gen_type generation, ID_type dad, ID_type mom);
   void add_children(person_ptr spouse, std::vector<person_ptr> children);
   void add_friendships(person_ptr friendo);

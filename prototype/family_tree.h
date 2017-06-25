@@ -34,13 +34,18 @@ class FamilyTree {
   std::unordered_map< gen_type, std::vector<ID_type> > gen_mapping;
 
   std::shared_ptr<FamilyNode> root;
+
+  ID_type find_random_same_generation(int steps, ID_type id);
+  void restricted_visit_person(ID_type id);
+  children_map generate_love_lives(ID_type id);
+  children_map restricted_generate_love_lives(ID_type id);
+  friend_vector generate_friendships(ID_type id);
+  void make_friends(ID_type person1, ID_type person2);
+  std::vector<ID_type> make_kids(ID_type person1, ID_type person2, int number);
+
  public:
   FamilyTree();
   void visit_person(ID_type id);
-  children_map generate_love_lives(ID_type id);
-  friend_vector generate_friendships(ID_type id);
-  std::vector<ID_type> make_kids(ID_type person1, ID_type person2, int number);
-  void make_friends(ID_type person1, ID_type person2);
 
   std::string toString_node(ID_type id);
   std::string toString();
