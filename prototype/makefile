@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Werror
 CXXFLAGS = -std=c++11
 
 gs: family_tree.o person.o main.o random_handler.o name_generator.o

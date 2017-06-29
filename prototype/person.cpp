@@ -25,8 +25,20 @@ void Person::add_children(person_ptr spouse, std::vector<person_ptr> children) {
   child_map[spouse->get_ID()] = children_IDs;
 }
 
+void Person::add_child(person_ptr spouse, person_ptr child) {
+  add_children(spouse, std::vector<person_ptr>({child}));
+}
+
+void Person::clear_children() {
+  child_map = children_map();
+}
+
 void Person::add_friendships(person_ptr friendo) {
   friends.push_back(friendo->get_ID());
+}
+
+void Person::clear_friendships() {
+  friends = friend_vector();
 }
 
 ID_type Person::get_ID() {

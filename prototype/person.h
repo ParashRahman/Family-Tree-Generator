@@ -36,7 +36,10 @@ class Person {
   
   Person(std::string name, gen_type generation, ID_type dad, ID_type mom);
   void add_children(person_ptr spouse, std::vector<person_ptr> children);
+  void add_child(person_ptr spouse, person_ptr child);
+  void clear_children();
   void add_friendships(person_ptr friendo);
+  void clear_friendships();
   ID_type get_ID();
   gen_type get_generation();
   ID_type get_mother();

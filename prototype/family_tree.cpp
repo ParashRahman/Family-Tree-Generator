@@ -5,6 +5,7 @@
 #include "family_tree.h"
 #include "name_generator.h"
 #include "person.h"
+#include "random_handler.h"
 
 typedef std::shared_ptr<Person> person_ptr;
 typedef std::weak_ptr<Person> weak_person_ptr;
@@ -17,11 +18,12 @@ FamilyTree::FamilyTree() {
   // id of god node parents??? potentially nonzero in unusual case
   std::shared_ptr<FamilyNode> godnode(new FamilyNode(person_ptr(new Person("O.G.D", 0, 0, 0))));
   this->root = godnode;
+
+  godnode->needs_update = false;
   
   ID_type god_ID = godnode->parent->get_ID();
   
   weak_node_ptrs[god_ID] = godnode;
-  needs_updating[god_ID] = false;
   gen_mapping[0] = std::vector<ID_type>({god_ID});
   
   make_kids(god_ID, god_ID, 2);
@@ -29,23 +31,65 @@ FamilyTree::FamilyTree() {
 
 void FamilyTree::visit_person(ID_type id) {
   // called only on people user explicitly sees.
-  
-  if (needs_updating[id]) {
-    generate_love_lives(id);
-    generate_friendships(id);
-    needs_updating[id] = false;
+  std::shared_ptr<FamilyNode> node_ptr = weak_node_ptrs[id].lock();
+
+  if (node_ptr->needs_update) {
+    // node_ptr->parent->clear_children();
+    // node_ptr->parent->clear_friendships();
+    
+    node_ptr->needs_update = false;
+    children_map children = generate_love_lives(id);
+    friend_vector friends = generate_friendships(id);
+
+    
   }
 }
 
 void FamilyTree::restricted_visit_person(ID_type id) {
   // as opposed to visit_person, restricted visit person does not generate
   //    full love lives/friendships of the person.
-
-  
+  std::shared_ptr<FamilyNode> node_ptr = weak_node_ptrs[id].lock();
+  restricted_generate_love_lives(id);
 }
 
-ID_type FamilyTree::find_random_same_generation(int steps, ID_type id) {
-  
+ID_type FamilyTree::find_random_same_generation(gen_type steps, ID_type id) {
+  RandomHandler rh;
+  std::shared_ptr<FamilyNode> current_node = weak_node_ptrs[id].lock();
+
+  gen_type steps_forward = 0;
+
+  // random walk up tree
+  while (steps > 0) {
+    int random_number = rh.randint(0,1);
+    ID_type parent_id;
+    if (random_number) {
+      parent_id = current_node->parent->get_mother();
+    } else {
+      parent_id = current_node->parent->get_father();
+    }
+
+    current_node = weak_node_ptrs[parent_id].lock();
+
+    ++steps_forward;    
+    --steps;
+
+    if (current_node == root) {
+      break;
+    }
+  }
+
+  // random walk down tree
+  while (steps_forward) {
+    if (current_node->children.size() == 0) {
+      return -1;
+    }
+    int random_number = rh.randint(0, current_node->children.size() - 1);
+    current_node = current_node->children[random_number];
+    
+    --steps_forward;
+  }
+
+  return current_node->parent->get_ID();
 }
 
 children_map FamilyTree::restricted_generate_love_lives(ID_type id) {
@@ -62,6 +106,8 @@ friend_vector FamilyTree::generate_friendships(ID_type id) {
 }
 
 std::vector<ID_type> FamilyTree::make_kids(ID_type person1, ID_type person2, int number) {
+  std::vector<ID_type> children_IDs;
+  
   for (int c = 0; c < number; ++c) {
     std::string childs_name = NameGenerator::get_random_name();
     
@@ -75,11 +121,13 @@ std::vector<ID_type> FamilyTree::make_kids(ID_type person1, ID_type person2, int
     
     std::shared_ptr<FamilyNode> childs_node(new FamilyNode(person_ptr(new Person(childs_name, childs_gen, person1, person2))));
 
+    childs_node->needs_update = false;
     ID_type childs_ID = childs_node->parent->get_ID();
 
+    children_IDs.push_back(childs_ID);
+    
     // update the appropriate dictionaries
     weak_node_ptrs[childs_ID] = childs_node;
-    needs_updating[childs_ID] = true;
     if (gen_mapping.find(childs_gen) == gen_mapping.end()) {
       gen_mapping[childs_gen] = std::vector<ID_type>();
     }
@@ -87,9 +135,13 @@ std::vector<ID_type> FamilyTree::make_kids(ID_type person1, ID_type person2, int
     
     if(person1 != person2) {
       person1_node->children.push_back(childs_node);
+      person1_node->parent->add_child(weak_node_ptrs[person2].lock()->parent, childs_node->parent);
     }
     person2_node->children.push_back(childs_node);
+    person2_node->parent->add_child(weak_node_ptrs[person1].lock()->parent, childs_node->parent);
   }
+
+  return children_IDs;
 }
 
 void FamilyTree::make_friends(ID_type person1, ID_type person2) {

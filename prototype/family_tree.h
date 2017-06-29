@@ -17,10 +17,12 @@ typedef std::unordered_map< ID_type, std::vector<ID_type> > children_map;
 struct FamilyNode {
   person_ptr parent;
   std::vector< std::shared_ptr<FamilyNode> > children;
+  bool needs_update;
 
   FamilyNode(person_ptr p) {
     parent = p;
     children = std::vector< std::shared_ptr<FamilyNode> >();
+    needs_update = true;
   }
 };
 
@@ -30,12 +32,11 @@ class FamilyTree {
   gen_type last_generation = 0;
 
   std::unordered_map< ID_type, std::weak_ptr<FamilyNode> > weak_node_ptrs;
-  std::unordered_map<ID_type, bool> needs_updating;
   std::unordered_map< gen_type, std::vector<ID_type> > gen_mapping;
 
   std::shared_ptr<FamilyNode> root;
 
-  ID_type find_random_same_generation(int steps, ID_type id);
+  ID_type find_random_same_generation(gen_type steps, ID_type id);
   void restricted_visit_person(ID_type id);
   children_map generate_love_lives(ID_type id);
   children_map restricted_generate_love_lives(ID_type id);
