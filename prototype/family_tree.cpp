@@ -44,8 +44,8 @@ void FamilyTree::visit_person(ID_type id) {
     // node_ptr->parent->clear_friendships();
     
     node_ptr->needs_update = false;
-    children_map children = generate_love_lives(id);
-    friend_vector friends = generate_friendships(id);    
+    /*children_map children =*/ generate_love_lives(id);
+    //friend_vector friends = generate_friendships(id);    
   }
 }
 
@@ -108,9 +108,12 @@ children_map FamilyTree::restricted_generate_love_lives(ID_type id) {
   ID_type funID;
   do {
     funID = find_random_same_generation(STEPS, id);
-  } while (funID != -1);
+  } while (funID == -1);
 
   make_kids(id, funID, NUM_KIDS);
+
+  // TODO: fix
+  return children_map();
 }
 
 children_map FamilyTree::generate_love_lives(ID_type id) {
@@ -122,14 +125,18 @@ children_map FamilyTree::generate_love_lives(ID_type id) {
     ID_type funID;
     do {
       funID = find_random_same_generation(STEPS, id);
-    } while (funID != -1);
+    } while (funID == -1);
 
     make_kids(id, funID, NUM_KIDS);
   }
+
+  // TODO: fix
+  return children_map();
 }
 
 friend_vector FamilyTree::generate_friendships(ID_type id) {
-  
+  // TODO: do
+  return friend_vector();
 }
 
 std::vector<ID_type> FamilyTree::make_kids(ID_type person1, ID_type person2, int number) {
