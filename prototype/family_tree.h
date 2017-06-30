@@ -34,8 +34,6 @@ class FamilyTree {
   std::unordered_map< ID_type, std::weak_ptr<FamilyNode> > weak_node_ptrs;
   std::unordered_map< gen_type, std::vector<ID_type> > gen_mapping;
 
-  std::shared_ptr<FamilyNode> root;
-
   ID_type find_random_same_generation(gen_type steps, ID_type id);
   void restricted_visit_person(ID_type id);
   children_map generate_love_lives(ID_type id);
@@ -46,8 +44,9 @@ class FamilyTree {
 
  public:
   FamilyTree();
+  std::shared_ptr<FamilyNode> get_person_from_id(ID_type id);
   void visit_person(ID_type id);
-
+  std::shared_ptr<FamilyNode> root;
   std::string toString_node(ID_type id);
   std::string toString();
 };

@@ -31,6 +31,10 @@ FamilyTree::FamilyTree() {
   make_kids(god_ID, god_ID, 2);
 }
 
+std::shared_ptr<FamilyNode> FamilyTree::get_person_from_id(ID_type id) {
+  return weak_node_ptrs[id].lock();
+}
+
 void FamilyTree::visit_person(ID_type id) {
   Logger::log("visit person: " + std::to_string(id));
   
