@@ -1,9 +1,9 @@
 CC = g++
-CFLAGS = -Werror
+CFLAGS = -Werror -g
 CXXFLAGS = -std=c++11
 
-gs: family_tree.o person.o main.o random_handler.o name_generator.o
-	${CC} ${CFLAGS} -o gs family_tree.o person.o main.o random_handler.o name_generator.o
+gs: family_tree.o person.o main.o random_handler.o name_generator.o logger.o
+	${CC} ${CFLAGS} ${CXXFLAGS} -o gs family_tree.o person.o main.o random_handler.o name_generator.o logger.o
 
 main.o: main.cpp
 	${CC} ${CFLAGS} ${CXXFLAGS} -c main.cpp
@@ -19,3 +19,9 @@ random_handler.o: random_handler.h random_handler.cpp
 
 name_generator.o: name_generator.h name_generator.cpp
 	${CC} ${CFLAGS} ${CXXFLAGS} -c name_generator.h name_generator.cpp
+
+logger.o: logger.h logger.cpp
+	${CC} ${CFLAGS} ${CXXFLAGS} -c logger.h logger.cpp
+
+clean:
+	rm -rf *.o

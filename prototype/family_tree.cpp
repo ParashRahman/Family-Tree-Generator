@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "family_tree.h"
+#include "logger.h"
 #include "name_generator.h"
 #include "person.h"
 #include "random_handler.h"
@@ -15,8 +16,9 @@ typedef std::vector<ID_type> friend_vector;
 typedef std::unordered_map< ID_type, std::vector<ID_type> > children_map;
 
 FamilyTree::FamilyTree() {
-  // id of god node parents??? potentially nonzero in unusual case
-  std::shared_ptr<FamilyNode> godnode(new FamilyNode(person_ptr(new Person("O.G.D", 0, 0, 0))));
+  // id of god node parents??? potentially nonzero in case where there exists multiple family trees
+  // therefore, do not depend on godnode's parents.
+  std::shared_ptr<FamilyNode> godnode(new FamilyNode(person_ptr(new Person("O.G.D", 0, -1, -1))));
   this->root = godnode;
 
   godnode->needs_update = false;
@@ -30,18 +32,20 @@ FamilyTree::FamilyTree() {
 }
 
 void FamilyTree::visit_person(ID_type id) {
+  Logger::log("visit person: " + std::to_string(id));
+  
   // called only on people user explicitly sees.
   std::shared_ptr<FamilyNode> node_ptr = weak_node_ptrs[id].lock();
 
   if (node_ptr->needs_update) {
+    Logger::log("visit person: needs update");
+      
     // node_ptr->parent->clear_children();
     // node_ptr->parent->clear_friendships();
     
     node_ptr->needs_update = false;
     children_map children = generate_love_lives(id);
-    friend_vector friends = generate_friendships(id);
-
-    
+    friend_vector friends = generate_friendships(id);    
   }
 }
 
@@ -80,6 +84,9 @@ ID_type FamilyTree::find_random_same_generation(gen_type steps, ID_type id) {
 
   // random walk down tree
   while (steps_forward) {
+    if (current_node->needs_update && current_node->children.size() == 0) {
+      restricted_generate_love_lives(current_node->parent->get_ID());
+    }
     if (current_node->children.size() == 0) {
       return -1;
     }
@@ -95,10 +102,30 @@ ID_type FamilyTree::find_random_same_generation(gen_type steps, ID_type id) {
 children_map FamilyTree::restricted_generate_love_lives(ID_type id) {
   // used when generating the random love walk for people the user has yet to
   //     see.
+  const gen_type STEPS = 10;
+  const int NUM_KIDS = 3;
+  
+  ID_type funID;
+  do {
+    funID = find_random_same_generation(STEPS, id);
+  } while (funID != -1);
+
+  make_kids(id, funID, NUM_KIDS);
 }
 
 children_map FamilyTree::generate_love_lives(ID_type id) {
-  
+  const gen_type STEPS = 10;
+  const int NUM_KIDS = 3;
+  const int NUM_PARTNERS = 3;
+
+  for (int p = 0; p < NUM_PARTNERS; ++p) {
+    ID_type funID;
+    do {
+      funID = find_random_same_generation(STEPS, id);
+    } while (funID != -1);
+
+    make_kids(id, funID, NUM_KIDS);
+  }
 }
 
 friend_vector FamilyTree::generate_friendships(ID_type id) {
@@ -121,7 +148,6 @@ std::vector<ID_type> FamilyTree::make_kids(ID_type person1, ID_type person2, int
     
     std::shared_ptr<FamilyNode> childs_node(new FamilyNode(person_ptr(new Person(childs_name, childs_gen, person1, person2))));
 
-    childs_node->needs_update = false;
     ID_type childs_ID = childs_node->parent->get_ID();
 
     children_IDs.push_back(childs_ID);

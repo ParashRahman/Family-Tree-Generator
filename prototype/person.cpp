@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -58,5 +59,5 @@ ID_type Person::get_father() {
 }
 
 std::string Person::toString() {
-  return name;
+  return name + " " + std::to_string(my_id);
 }
