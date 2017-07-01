@@ -1,7 +1,7 @@
 #include <iostream>
 
 int main() {
-  for (int i = 137; i <= 170; ++i) {
-    std::cout << "break family_tree.cpp:" << i << std::endl;
+  for (int i = 24; i <= 35; ++i) {
+    std::cout << "break tui.cpp:" << i << std::endl;
   }
 }
