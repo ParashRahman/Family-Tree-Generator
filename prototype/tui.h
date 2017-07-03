@@ -8,7 +8,6 @@ class TUI {
   FamilyTree ft;
   std::shared_ptr<FamilyNode> current_node;
   void print_current_state();
-  void process_user_input();
  public:
   TUI();
   void start_tui();

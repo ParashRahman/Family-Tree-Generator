@@ -38,6 +38,3 @@ void TUI::print_current_state() {
   std::cout << std::string(12, '=') << std::endl;
 }
 
-void TUI::process_user_input() {
-  
-}
