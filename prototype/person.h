@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "person_stats.h"
+
 class Person;
 typedef std::shared_ptr<Person> person_ptr;
 typedef unsigned long long ID_type;
@@ -13,14 +15,7 @@ typedef unsigned long long gen_type;
 typedef std::unordered_map< ID_type, std::vector<ID_type> > children_map;
 typedef std::vector<ID_type> friend_vector;
 
-struct PersonStats {
-  
-};
-
-class Person {
- public:
-    enum PersonStatistic { tolerance };
-  
+class Person {  
  private:
   std::string name;
   static ID_type CURRENT_ID;
@@ -30,11 +25,12 @@ class Person {
   friend_vector friends;
   ID_type father;
   ID_type mother;
-  std::unordered_map< int, double > person_stats;
+
+  PersonStats person_stats;
   
  public:
   
-  Person(std::string name, gen_type generation, ID_type dad, ID_type mom);
+  Person(std::string name, gen_type generation, ID_type dad, ID_type mom, PersonStats ps);
   void add_children(person_ptr spouse, std::vector<person_ptr> children);
   void add_child(person_ptr spouse, person_ptr child);
   void clear_children();
@@ -45,6 +41,8 @@ class Person {
   ID_type get_mother();
   ID_type get_father();
 
+  PersonStats get_stats();
+  
   std::string toString();
 };
 

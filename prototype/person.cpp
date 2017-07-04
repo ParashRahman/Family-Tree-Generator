@@ -11,7 +11,8 @@ typedef unsigned long long gen_type;
 
 ID_type Person::CURRENT_ID = 0;
 
-Person::Person(std::string nom, gen_type gen, ID_type dad, ID_type mom) : name(nom), my_generation(gen), father(dad), mother(mom) {
+Person::Person(std::string nom, gen_type gen, ID_type dad, ID_type mom, PersonStats ps) : name(nom), my_generation(gen), father(dad), mother(mom) {
+  person_stats = PersonStats(ps, true);
   my_id = CURRENT_ID;
   ++CURRENT_ID;
 }
@@ -56,6 +57,10 @@ ID_type Person::get_mother() {
 
 ID_type Person::get_father() {
   return father;
+}
+
+PersonStats Person::get_stats() {
+  return person_stats;
 }
 
 std::string Person::toString() {

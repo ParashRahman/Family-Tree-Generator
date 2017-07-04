@@ -4,6 +4,7 @@
 #include <functional>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 struct StatEnumClassHash
 {
@@ -20,14 +21,16 @@ enum class Stat { tolerance, permiscuity, social,
       height, weight };
 
 class PersonStats {
- private:  
-  static const std::unordered_map<Stat, std::string, StatEnumClassHash> stat_to_name;
-  static const std::unordered_map<Stat, double, StatEnumClassHash> stat_fudge_factor;
-  static const std::unordered_map<Stat, std::function<double(PersonStats, PersonStats)>, StatEnumClassHash> stat_function;
+ private:
+  static std::unordered_map<Stat, std::string, StatEnumClassHash> stat_to_name;
+  static std::unordered_map<Stat, double, StatEnumClassHash> stat_fudge_factor;
+  static std::unordered_map<Stat, std::function<double(double, double)>, StatEnumClassHash> stat_function;
+  static std::vector<Stat> iterable_stat_enum;
  public:
   std::unordered_map<Stat, double, StatEnumClassHash> stat_to_value;
   PersonStats();
-  PersonStats(PersonStats parent1, PersonStats parent2);
+  PersonStats(PersonStats ps, bool trash);
+  PersonStats(PersonStats ps1, PersonStats ps2);
 };
 
 #endif

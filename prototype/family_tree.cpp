@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "name_generator.h"
 #include "person.h"
+#include "person_stats.h"
 #include "random_handler.h"
 
 typedef std::shared_ptr<Person> person_ptr;
@@ -18,7 +19,7 @@ typedef std::unordered_map< ID_type, std::vector<ID_type> > children_map;
 FamilyTree::FamilyTree() {
   // id of god node parents??? potentially nonzero in case where there exists multiple family trees
   // therefore, do not depend on godnode's parents.
-  std::shared_ptr<FamilyNode> godnode(new FamilyNode(person_ptr(new Person("O.G.D", 0, -1, -1))));
+  std::shared_ptr<FamilyNode> godnode(new FamilyNode(person_ptr(new Person("O.G.D", 0, -1, -1, PersonStats()))));
   this->root = godnode;
 
   godnode->needs_update = false;
@@ -157,7 +158,7 @@ std::vector<ID_type> FamilyTree::make_kids(ID_type person1, ID_type person2, int
 
     gen_type childs_gen = person1_gen + 1;
     
-    std::shared_ptr<FamilyNode> childs_node(new FamilyNode(person_ptr(new Person(childs_name, childs_gen, person1, person2))));
+    std::shared_ptr<FamilyNode> childs_node(new FamilyNode(person_ptr(new Person(childs_name, childs_gen, person1, person2, PersonStats(person1_node->parent->get_stats(), person2_node->parent->get_stats())))));
 
     ID_type childs_ID = childs_node->parent->get_ID();
 
