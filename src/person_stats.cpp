@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <functional>
 #include <iostream>
 #include <string>
@@ -6,6 +7,8 @@
 
 #include "person_stats.h"
 #include "random_handler.h"
+
+std::function<double(double,double)> PersonStats::default_average = [](double p1, double p2)->double {return (p1+p2)/2;};
 
 std::unordered_map<Stat, std::string, StatEnumClassHash> PersonStats::stat_to_name =
   {
@@ -39,17 +42,17 @@ std::unordered_map<Stat, double, StatEnumClassHash> PersonStats::stat_fudge_fact
 
 std::unordered_map<Stat, std::function<double(double, double)>, StatEnumClassHash> PersonStats::stat_function =
   {
-    {Stat::tolerance, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::permiscuity, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::economic, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::health, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::social, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::intelligence, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::hair_color, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::skin_color,  [](double p1, double p2)->double {return 0.5;}},
-    {Stat::eye_color, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::height, [](double p1, double p2)->double {return 0.5;}},
-    {Stat::weight, [](double p1, double p2)->double {return 0.5;}}
+    {Stat::tolerance, default_average},
+    {Stat::permiscuity, default_average},
+    {Stat::economic, default_average},
+    {Stat::health, default_average},
+    {Stat::social, default_average},
+    {Stat::intelligence, default_average},
+    {Stat::hair_color, default_average},
+    {Stat::skin_color,  default_average},
+    {Stat::eye_color, default_average},
+    {Stat::height, default_average},
+    {Stat::weight, default_average}
   };
 
 std::vector<Stat> PersonStats::iterable_stat_enum =
@@ -77,8 +80,12 @@ PersonStats::PersonStats(PersonStats ps, bool trash) {
 }
 
 PersonStats::PersonStats(PersonStats ps1, PersonStats ps2) {
+  RandomHandler rh;
+  
   for (Stat s : iterable_stat_enum) {
-    stat_to_value[s] = stat_function[s](ps1.stat_to_value[s], ps2.stat_to_value[s]);
+    stat_to_value[s] = stat_function[s](ps1.stat_to_value[s], ps2.stat_to_value[s])
+      + rh.randdoubl(-1 * stat_fudge_factor[s], stat_fudge_factor[s]);
+    stat_to_value[s] = std::max(std::min(stat_to_value[s], 1.0), 0.0);
   }
 }
 

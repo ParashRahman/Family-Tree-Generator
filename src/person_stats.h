@@ -24,6 +24,7 @@ class PersonStats {
  private:
   static std::unordered_map<Stat, double, StatEnumClassHash> stat_fudge_factor;
   static std::unordered_map<Stat, std::function<double(double, double)>, StatEnumClassHash> stat_function;
+  static std::function<double(double,double)> default_average;
  public:
   static std::vector<Stat> iterable_stat_enum;
   static std::unordered_map<Stat, std::string, StatEnumClassHash> stat_to_name;
